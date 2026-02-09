@@ -1,19 +1,50 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { login } from "../../app/features/authSlice";
+import api from "../../configs/api";
+import { useNavigate } from "react-router-dom";
+
+
 
 const Hero = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-  const logos = [
-    "https://saasly.prebuiltui.com/assets/companies-logo/instagram.svg",
-    "https://saasly.prebuiltui.com/assets/companies-logo/framer.svg",
-    "https://saasly.prebuiltui.com/assets/companies-logo/microsoft.svg",
-    "https://saasly.prebuiltui.com/assets/companies-logo/huawei.svg",
-    "https://saasly.prebuiltui.com/assets/companies-logo/walmart.svg",
-  ];
+  const navigate = useNavigate();
+
+const handleGuestLogin = async () => {
+
+  const token = localStorage.getItem("token");
+
+  try {
+    const { data } = await api.post("/api/users/guest", {}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    localStorage.setItem("token", data.token);
+
+    dispatch(login({
+      token: data.token,
+      user: data.user
+    }));
+
+    navigate("/app");
+
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+
+
+
+
+
 
   return (
     <>
@@ -41,13 +72,13 @@ const Hero = () => {
           </div>
 
           <div className="flex gap-2">
-            <Link
+            {/* <Link
               to="/app?state=register"
               className="hidden md:block px-6 py-2 bg-green-500 hover:bg-green-700 active:scale-95 transition-all rounded-full text-white"
               hidden={user}
             >
               Get started
-            </Link>
+            </Link> */}
             <Link
               to="/app?state=login"
               className="hidden md:block px-6 py-2 border active:scale-95 hover:bg-slate-50 transition-all rounded-full text-slate-700 hover:text-slate-900"
@@ -192,40 +223,45 @@ items-center text-sm px-4 md:px-16 lg:px-24 xl:px-40 text-black">
   <div className="flex items-center gap-3 flex-wrap justify-center">
 
     {/* Get Started */}
-    <Link
-      to="/app"
-      className="bg-green-500 hover:bg-green-600 text-white rounded-full px-8 h-12 ring-1 ring-green-400 flex items-center transition-colors"
-    >
-      Get Started
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="ml-2 size-4"
-      >
-        <path d="M5 12h14"></path>
-        <path d="m12 5 7 7-7 7"></path>
-      </svg>
-    </Link>
+<Link
+  to="/app"
+  className="bg-green-500 hover:bg-green-600 text-white rounded-full px-8 h-12 ring-1 ring-green-400 flex items-center transition-colors"
+>
+  {user ? "New Resume" : "Get Started"}
+
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="ml-2 size-4"
+  >
+    <path d="M5 12h14"></path>
+    <path d="m12 5 7 7-7 7"></path>
+  </svg>
+</Link>
+
 
     {/* Create New Resume */}
-    <Link
-      to="/create-resume"
-      className="border border-slate-400 hover:bg-green-50 transition rounded-full px-8 h-12 text-slate-700 flex items-center"
-    >
-      Create New Resume
-    </Link>
+<Link
+  to={user ? "/app" : "/app?state=login"}
+  className="border border-slate-400 hover:bg-green-50 transition rounded-full px-8 h-12 text-slate-700 flex items-center"
+>
+  {user ? "Upload Resume" : "New Resume"}
+</Link>
+
 
   </div>
 
   {/* Guest Button */}
-  <button className="text-sm text-slate-500 hover:text-green-600 transition">
+  <button onClick={handleGuestLogin} className="text-sm text-slate-500 hover:text-green-600 transition"
+  hidden = {user}
+  >
     Continue as Guest
   </button>
 

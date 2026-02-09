@@ -179,6 +179,70 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                             </div>
                         </section>
                     )}
+
+
+                              {/* Certification */}
+          {data.certification && data.certification.length > 0 && (
+            <section>
+              <h2
+                className="text-sm uppercase tracking-widest font-semibold"
+                style={{ color: accentColor }}
+              >
+                CERTIFICATIONS
+              </h2>
+
+              <div className="space-y-1">
+                {data.certification.map((cert, index) => {
+                  return (
+                    <div key={index} className="flex space-x-2">
+                      <Award
+                        size={16}
+                        className="mt-1 shrink-0"
+                        style={{ color: accentColor }}
+                      />
+                      <div className="grow">
+                        <div className="flex justify-between items-start text-sm">
+                          <h3 className="text-gray-900 leading-tight">
+                            {cert.credential_url ? (
+                              <div className="flex items-center">
+                                {cert.certificate_name}
+
+                                <p className="text-sm italic ml-1">
+                                  {cert.issuer}
+                                </p>
+
+                                <a
+                                  href={cert.credential_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <ExternalLink
+                                    size={12}
+                                    className="ml-1 opacity-75 shrink-0"
+                                  />
+                                </a>
+                              </div>
+                            ) : (
+                              cert.certificate_name
+                            )}
+                          </h3>
+                          <p className="text-gray-600 shrink-0 ml-4">
+                            {formatDate(cert.issue_date)}
+                          </p>
+                        </div>
+
+                        {cert.description && (
+                          <p className="text-gray-700 leading-relaxed text-sm">
+                            {cert.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
                 </main>
             </div>
         </div>

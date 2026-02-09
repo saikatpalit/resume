@@ -28,7 +28,7 @@ import SkillsForm from "../components/SkillsForm";
 import { useSelector } from "react-redux";
 import api from "../configs/api";
 import toast from "react-hot-toast";
-import CertificationForm from "../components/CertificationForm";
+import CertificationForm from "../components/certificationForm";
 
 const ResumeBuilder = () => {
   const { resumeId } = useParams();

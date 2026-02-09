@@ -268,6 +268,65 @@ const CreativeVisualTemplate = ({ data, accentColor }) => {
           </div>
         </section>
       )}
+
+
+            {/* Certification */}
+      {data.certification && data.certification.length > 0 && (
+        <section>
+          <h2 className="text-lg font-semibold" style={{ color: accentColor }}>
+            Certifications
+          </h2>
+
+          <div className="space-y-1">
+            {data.certification.map((cert, index) => {
+              return (
+                <div key={index} className="flex space-x-2">
+                  <Award
+                    size={16}
+                    className="mt-1 shrink-0"
+                    style={{ color: accentColor }}
+                  />
+
+                  <div className="grow">
+                    <h3 className="text-sm text-gray-600 leading-tight flex items-center justify-between">
+                      {cert.credential_url ? (
+                        <div className="flex items-center font-medium">
+                          {cert.certificate_name}
+
+                          <p className="text-sm text-gray-900 italic ml-1">
+                            {cert.issuer}
+                          </p>
+                          <a
+                            href={cert.credential_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <ExternalLink
+                              size={12}
+                              className="ml-1 opacity-75 shrink-0"
+                            />
+                          </a>
+                        </div>
+                      ) : (
+                        <>{cert.certificate_name}</>
+                      )}
+                      <p className="text-gray-500">
+                        {formatDate(cert.issue_date)}
+                      </p>
+                    </h3>
+
+                    {cert.description && (
+                      <p className="text-sm text-gray-500 italic">
+                        {cert.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
     </div>
   );
 };

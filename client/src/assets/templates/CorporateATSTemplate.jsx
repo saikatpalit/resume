@@ -275,6 +275,61 @@ const CorporateATSTemplate = ({ data, accentColor }) => {
           </div>
         </section>
       )}
+
+        {data.certification && data.certification.length > 0 && (
+        <section>
+          <h2
+            style={{ color: accentColor }}
+            className="text-sm font-semibold uppercase"
+          >
+            Certifications
+          </h2>
+
+          <div className="space-y-1">
+            {data.certification.map((cert, index) => {
+              return (
+                <div key={index} className="flex space-x-2">
+                  <div className="grow">
+                    <h3 className="text-sm text-gray-900 leading-tight flex justify-between items-center">
+                      {cert.credential_url ? (
+                        <div className="flex items-center font-medium">
+                          {cert.certificate_name}
+
+                          <p className="text-sm italic ml-1">
+                            {cert.issuer}
+                          </p>
+                          <a
+                            href={cert.credential_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <ExternalLink
+                              size={12}
+                              className="ml-1 opacity-75 shrink-0"
+                            />
+                          </a>
+                        </div>
+                      ) : (
+                        cert.certificate_name
+                      )}
+
+                      <p className="text-sm text-gray-500 shrink-0">
+                        {formatDate(cert.issue_date)}
+                      </p>
+                    </h3>
+
+                    {cert.description && (
+                      <p className="text-xs text-zinc-700 italic">
+                        {cert.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
     </div>
   );
 };

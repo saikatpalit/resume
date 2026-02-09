@@ -154,6 +154,60 @@ const ClassicTemplate = ({ data, accentColor }) => {
                     </div>
                 </section>
             )}
+
+             {/* CERTIFICATIONS (NEW SECTION) */}
+      {data.certification && data.certification.length > 0 && (
+        <section className="mb-1">
+          <h2 className="text-lg font-semibold" style={{ color: accentColor }}>
+            CERTIFICATIONS
+          </h2>
+
+          <div className="space-y-1">
+            {data.certification.map((cert, index) => {
+              return (
+                <div key={index} className="flex items-start">
+                  <div className="grow">
+                    <div className="flex justify-between items-start text-sm">
+                      <h3 className="text-gray-900 font-medium leading-tight">
+                        {cert.credential_url ? (
+                          <div className="flex items-center">
+                            {cert.certificate_name}
+
+                            <p className="text-sm text-gray-700 italic ml-1">
+                              {cert.issuer}
+                            </p>
+                            <a
+                              href={cert.credential_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <ExternalLink
+                                size={12}
+                                className="ml-1 opacity-75 shrink-0"
+                              />
+                            </a>
+                          </div>
+                        ) : (
+                          cert.certificate_name
+                        )}
+                      </h3>
+                      <p className="text-sm text-gray-500 shrink-0">
+                        {formatDate(cert.issue_date)}
+                      </p>
+                    </div>
+
+                    {cert.description && (
+                      <p className="text-gray-700 leading-relaxed text-sm">
+                        {cert.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
         </div>
     );
 }
