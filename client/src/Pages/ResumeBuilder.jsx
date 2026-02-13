@@ -25,10 +25,12 @@ import ExperienceForm from "../components/ExperienceForm";
 import EducationForm from "../components/EducationForm";
 import ProjectForm from "../components/ProjectForm";
 import SkillsForm from "../components/SkillsForm";
+import InterestsForm from "../components/InterestsForm";
 import { useSelector } from "react-redux";
 import api from "../configs/api";
 import toast from "react-hot-toast";
 import CertificationForm from "../components/certificationForm";
+import LanguagesForm from "../components/LanguagesForm";
 
 const ResumeBuilder = () => {
   const { resumeId } = useParams();
@@ -43,6 +45,12 @@ const ResumeBuilder = () => {
     education: [],
     project: [],
     skill: [],
+    languages: [],
+interests: {
+  professional: [],
+  personal: []
+},
+ 
     template: "classic",
     accent_color: "#3b82f6",
     public: false,
@@ -57,6 +65,10 @@ const ResumeBuilder = () => {
     { id: "education", name: "Education", icon: GraduationCap },
     { id: "projects", name: "Projects", icon: FolderIcon },
     { id: "skills", name: "Skills", icon: Sparkles },
+    { id: "languages", name: "languages", icon: Sparkles },
+
+{ id: "interests", name: "Interests", icon: Sparkles },
+
     { id: "certification", name: "Certification", icon: Award },
   ];
 
@@ -68,10 +80,26 @@ const ResumeBuilder = () => {
         headers: { Authorization: token },
       });
 
+      // if (data.resume) {
+      //   setResumeData(data.resume);
+      //   document.title = data.resume.title;
+      // }
+
       if (data.resume) {
-        setResumeData(data.resume);
-        document.title = data.resume.title;
-      }
+setResumeData({
+  ...data.resume,
+  skill: data.resume.skill || [],
+  languages: data.resume.languages || [],
+  interests: data.resume.interests || {
+    professional: [],
+    personal: []
+  },
+});
+
+
+  document.title = data.resume.title;
+}
+
     } catch (error) {
       console.error("Error saving resume:", error);
     }
@@ -294,6 +322,33 @@ const ResumeBuilder = () => {
                     }
                   />
                 )}
+
+            {activeSection.id === "languages" && (
+  <LanguagesForm
+    data={resumeData.languages || []}
+    onChange={(data) =>
+      setResumeData((prev) => ({
+        ...prev,
+        languages: data,
+      }))
+    }
+  />
+)}
+
+{activeSection.id === "interests" && (
+  <InterestsForm
+    data={resumeData.interests || { professional: [], personal: [] }}
+    onChange={(data) =>
+      setResumeData((prev) => ({
+        ...prev,
+        interests: data,
+      }))
+    }
+  />
+)}
+
+
+
                 {activeSection.id === "certification" && (
                   <CertificationForm
                     data={resumeData.certification}

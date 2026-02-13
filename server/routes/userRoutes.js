@@ -4,6 +4,7 @@ import {
   getUserResumes,
   loginUser,
   registerUser,
+  guestLogin,
 } from "../controllers/userController.js";
 import protect from "../middlewares/authMiddleware.js";
 
@@ -13,5 +14,6 @@ userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
 userRouter.get("/data", protect, getUserById);
 userRouter.get("/resumes", protect, getUserResumes);
+userRouter.post("/guest", guestLogin);
 
 export default userRouter;

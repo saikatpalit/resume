@@ -38,15 +38,31 @@ const ResumeSchema = new mongoose.Schema(
         link: { type: String },
       },
     ],
-    education: [
-      {
-        institution: { type: String },
-        degree: { type: String },
-        field: { type: String },
-        graduation_date: { type: String },
-        gpa: { type: String },
-      },
-    ],
+education: [
+  {
+    institution: { type: String },
+    degree: { type: String },
+    field: { type: String },
+    start_year: { type: String },
+    end_year: { type: String },
+    gpa: { type: String },
+  },
+],
+
+
+interests: {
+  professional: [
+    {
+      title: { type: String, default: "" },
+      website: { type: String, default: "" },
+      description: { type: String, default: "" },
+    },
+  ],
+
+  personal: [{ type: String }],
+},
+
+
     certification: [
       {
         certificate_name: { type: String },

@@ -5,7 +5,7 @@ import Resume from "../models/Resume.js";
 
 const generateToken = (userId) => {
   const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
+    expiresIn: "1d",
   });
   return token;
 };
@@ -43,6 +43,57 @@ export const registerUser = async (req, res) => {
     return res.status(400).json({ message: error.message });
   }
 };
+
+
+// POST: /api/users/guest
+export const guestLogin = async (req, res) => {
+  try {
+
+const token = req.headers.authorization?.split(" ")[1];
+
+
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        const existingUser = await User.findById(decoded.userId);
+
+        if (existingUser && existingUser.isGuest) {
+          return res.json({
+            token,
+            user: existingUser
+          });
+        }
+
+      } catch (err) {
+        // invalid token → create new guest
+      }
+    }
+
+    // create new guest if no valid token
+    const guestEmail = `guest_${Date.now()}@guest.com`;
+
+    const newUser = await User.create({
+      name: "Guest User",
+      email: guestEmail,
+      isGuest: true,
+      guestExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
+
+    });
+
+    const newToken = generateToken(newUser._id);
+
+    res.json({
+      token: newToken,
+      user: newUser
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 
 // POST: /api/users/login
 export const loginUser = async (req, res) => {
