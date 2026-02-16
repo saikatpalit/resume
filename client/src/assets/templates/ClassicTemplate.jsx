@@ -284,15 +284,22 @@ const ClassicTemplate = ({ data, accentColor }) => {
 
         {/* College + CGPA */}
       {/* College + CGPA */}
-<div className="mt-1 space-y-1">
-  <p className="text-gray-700">{edu.institution}</p>
+<div className="mt-1 flex items-center gap-4">
+ <div className="mt-1 text-gray-700">
+  <span>{edu.institution}</span>
 
   {edu.gpa && (
-    <p className="text-sm text-gray-600">
-      CGPA: {edu.gpa}
-    </p>
+    <>
+      <span className="mx-2 text-gray-700">|</span>
+      <span className="text-sm text-gray-700">
+        CGPA: {edu.gpa}
+      </span>
+    </>
   )}
 </div>
+
+</div>
+
 
 
       </div>
