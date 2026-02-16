@@ -77,27 +77,35 @@ const ClassicTemplate = ({ data, accentColor }) => {
 
       </div>
 
+{data.personal_info?.website && (() => {
+  const website = data.personal_info.website.trim();
 
-{data.personal_info?.website && (
-  <div className="flex items-start gap-1 min-w-0">
-    <Globe className="size-4 mt-0.5 shrink-0" />
-    <span className="break-all leading-snug">
-      Portfolio:{" "}
-      <a
-        href={
-          data.personal_info.website.startsWith("http")
-            ? data.personal_info.website
-            : `https://${data.personal_info.website}`
-        }
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600 hover:underline"
-      >
-        {data.personal_info.website}
-      </a>
-    </span>
-  </div>
-)}
+  // Remove protocol if exists
+  const withoutProtocol = website.replace(/^https?:\/\//, "");
+
+  // Remove starting www.
+  const withoutWWW = withoutProtocol.replace(/^www\./, "");
+
+  // Final link that will open
+  const finalHref = `https://${withoutWWW}`;
+
+  return (
+    <div className="flex items-start gap-1 min-w-0">
+      <Globe className="size-4 mt-0.5 shrink-0" />
+      <span className="break-all leading-snug">
+        Portfolio:{" "}
+        <a
+          href={finalHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:underline"
+        >
+          {website}
+        </a>
+      </span>
+    </div>
+  );
+})()}
 
 
       {/* Links */}
