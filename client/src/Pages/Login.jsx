@@ -5,6 +5,10 @@ import api from "../configs/api";
 import { login } from "../app/features/authSlice";
 import toast from "react-hot-toast";
 
+
+
+
+
 const Login = () => {
   const query = new URLSearchParams(window.location.search);
   const urlState = query.get("state");
@@ -18,20 +22,42 @@ const Login = () => {
 
   const dispatch = useDispatch();
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const { data } = await api.post(`/api/users/${state}`, formData);
+
+  //     dispatch(login(data));
+
+  //     localStorage.setItem("token", data.token);
+
+  //     toast.success(data.message);
+  //   } catch (error) {
+  //     toast(error?.response?.data?.message || error.message);
+  //   }
+  // };
+
+  const [loading, setLoading] = useState(false);
+
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const { data } = await api.post(`/api/users/${state}`, formData);
+  e.preventDefault();
+  setLoading(true);
 
-      dispatch(login(data));
+  try {
+    const { data } = await api.post(`/api/users/${state}`, formData);
 
-      localStorage.setItem("token", data.token);
+    dispatch(login(data));
+    localStorage.setItem("token", data.token);
 
-      toast.success(data.message);
-    } catch (error) {
-      toast(error?.response?.data?.message || error.message);
-    }
-  };
+    toast.success(data.message);
+  } catch (error) {
+    toast(error?.response?.data?.message || error.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -87,12 +113,44 @@ const Login = () => {
           />
         </div>
 
-        <button
-          type="submit"
-          className="mt-4 w-full h-11 rounded-full text-white bg-green-500 hover:opacity-90 transition-opacity"
-        >
-          {state === "login" ? "Login" : "Sign up"}
-        </button>
+<button
+  type="submit"
+  disabled={loading}
+  className={`mt-4 w-full h-11 rounded-full text-white transition-opacity flex items-center justify-center gap-2
+    ${loading ? "bg-green-400 cursor-not-allowed" : "bg-green-500 hover:opacity-90"}
+  `}
+>
+  {loading ? (
+    <>
+      <svg
+        className="animate-spin h-4 w-4 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+        ></path>
+      </svg>
+      Processing...
+    </>
+  ) : state === "login" ? (
+    "Login"
+  ) : (
+    "Sign up"
+  )}
+</button>
+
         <p
           onClick={() =>
             setState((prev) => (prev === "login" ? "register" : "login"))
