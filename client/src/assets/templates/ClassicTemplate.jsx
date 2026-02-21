@@ -239,7 +239,7 @@ const ClassicTemplate = ({ data, accentColor }) => {
 {data.skills && data.skills.length > 0 && (
   <section className="mb-3">
     <h2
-      className="text-xl font-semibold mb-2 tracking-wide"
+      className="text-xl font-semibold mb-3 tracking-wide"
       style={{ color: accentColor }}
     >
       CORE SKILLS :
