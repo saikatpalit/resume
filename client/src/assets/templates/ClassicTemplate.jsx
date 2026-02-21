@@ -14,7 +14,7 @@ const ClassicTemplate = ({ data, accentColor }) => {
       <div className="max-w-4xl mx-auto px-8 pt-5 pb-0 bg-white text-gray-800 leading-relaxed">
 
 <header
-  className="mb-3 pb-3 border-b-2"
+  className="mb-4 pb-3 border-b-2"
   style={{ borderColor: accentColor }}
 >
   <div className="grid grid-cols-[auto_1px_1fr] items-start">
@@ -145,7 +145,7 @@ const ClassicTemplate = ({ data, accentColor }) => {
 
             {/* Professional Summary */}
             {data.professional_summary && (
-                <section className="mb-3">
+                <section className="mb-4">
                     <h2 className="text-xl font-semibold mb-1" style={{ color: accentColor }}>
                         PROFESSIONAL SUMMARY :
                     </h2>
@@ -155,7 +155,7 @@ const ClassicTemplate = ({ data, accentColor }) => {
 
             {/* Experience */}
             {data.experience && data.experience.length > 0 && (
-                <section className="mb-3">
+                <section className="mb-4">
                     <h2 className="text-xl font-semibold mb-1" style={{ color: accentColor }}>
                         EXPERIENCE :
                     </h2>
@@ -184,7 +184,7 @@ const ClassicTemplate = ({ data, accentColor }) => {
             )}
 {/* Projects */}
 {data.project && data.project.length > 0 && (
-  <section className="mb-3">
+  <section className="mb-4">
 
     <h2
       className="text-xl font-semibold flex items-center gap-2"
@@ -239,7 +239,7 @@ const ClassicTemplate = ({ data, accentColor }) => {
 {data.skills && data.skills.length > 0 && (
   <section className="mb-3">
     <h2
-      className="text-xl font-semibold mb-20 tracking-wide"
+      className="text-xl font-semibold mb-3 tracking-wide"
       style={{ color: accentColor }}
     >
       CORE SKILLS :
